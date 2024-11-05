@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD com JavaScript</title>
+</head>
+<body>
+    <script>
+        const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+
+        // Função para criar um post
+        function createPost(data) {
+            return fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }).then(response => response.json());
+        }
+
+        // Função para ler posts
+        function getPosts() {
+            return fetch(apiUrl)
+                .then(response => response.json());
+        }
+
+        // Função para atualizar um post
+        function updatePost(id, data) {
+            return fetch(`${apiUrl}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }).then(response => response.json());
+        }
+
+        // Função para deletar um post
+        function deletePost(id) {
+            return fetch(`${apiUrl}/${id}`, {
+                method: 'DELETE',
+            }).then(response => {
+                if (response.ok) {
+                    return Promise.resolve('Post deletado com sucesso');
+                } else {
+                    return Promise.reject('Erro ao deletar o post');
+                }
+            });
+        }
+
+        // Exemplo de uso das funções CRUD
+        const newPost = {
+            title: 'Novo Post',
+            body: 'Este é o conteúdo do novo post.',
+            userId: 1,
+        };
+
+        // Criar um novo post
+        createPost(newPost)
+            .then(post => {
+                console.log('Post criado:', post);
+                return getPosts(); // Ler posts após criar
+            })
+            .then(posts => {
+                console.log('Posts:', posts);
+                const postId = posts[0].id; // Exemplo: atualizar o primeiro post
+                const updatedPost = { title: 'Post Atualizado', body: 'Conteúdo atualizado.', userId: 1 };
+
+                return updatePost(postId, updatedPost); // Atualizar post
+            })
+            .then(updated => {
+                console.log('Post atualizado:', updated);
+                return deletePost(updated.id); // Deletar post
+            })
+            .then(message => {
+                console.log(message);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    </script>
+</body>
+</html>
