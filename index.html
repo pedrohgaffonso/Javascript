@@ -3,93 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD com JavaScript</title>
+    <title>FakeStore API - Gerenciamento de Favoritos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        #products, #favorites {
+            margin-bottom: 20px;
+        }
+        .product, .favorite {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>CRUD DE UMA API EM JAVASCRIPT</h1>
-    <h2>Foi ultilizada a API JSONPlaceholder, que é uma API fake para testes e protótipos.</h2>
-    <div>
-        <p>createPost(data): Envia um novo post para a API usando o método POST.</p>
-        <p>getPosts(): Recupera todos os posts da API usando o método GET.</p>
-        <p>updatePost(id, data): Atualiza um post existente usando o método PUT.</p>
-        <p>deletePost(id): Deleta um post existente usando o método DELETE.</p>
-        <p>O código cria um novo post, lê todos os posts, atualiza o primeiro post e, em seguida, deleta o post atualizado.</p>                
-        <p>Os resultados de cada operação são exibidos no console.</p>
-    </div>
-    <script>
-        const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+    <h1>Produtos</h1>
+    <div id="products"></div>
+    <h2>Favoritos</h2>
+    <div id="favorites"></div>
 
-        // Função para criar um post
-        function createPost(data) {
-            return fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            }).then(response => response.json());
-        }
-
-        // Função para ler posts
-        function getPosts() {
-            return fetch(apiUrl)
-                .then(response => response.json());
-        }
-
-        // Função para atualizar um post
-        function updatePost(id, data) {
-            return fetch(`${apiUrl}/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            }).then(response => response.json());
-        }
-
-        // Função para deletar um post
-        function deletePost(id) {
-            return fetch(`${apiUrl}/${id}`, {
-                method: 'DELETE',
-            }).then(response => {
-                if (response.ok) {
-                    return Promise.resolve('Post deletado com sucesso');
-                } else {
-                    return Promise.reject('Erro ao deletar o post');
-                }
-            });
-        }
-
-        // Exemplo de uso das funções CRUD
-        const newPost = {
-            title: 'Novo Post',
-            body: 'Este é o conteúdo do novo post.',
-            userId: 1,
-        };
-
-        // Criar um novo post
-        createPost(newPost)
-            .then(post => {
-                console.log('Post criado:', post);
-                return getPosts(); // Ler posts após criar
-            })
-            .then(posts => {
-                console.log('Posts:', posts);
-                const postId = posts[0].id; // Exemplo: atualizar o primeiro post
-                const updatedPost = { title: 'Post Atualizado', body: 'Conteúdo atualizado.', userId: 1 };
-
-                return updatePost(postId, updatedPost); // Atualizar post
-            })
-            .then(updated => {
-                console.log('Post atualizado:', updated);
-                return deletePost(updated.id); // Deletar post
-            })
-            .then(message => {
-                console.log(message);
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-            });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
